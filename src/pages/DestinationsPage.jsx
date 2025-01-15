@@ -6,8 +6,6 @@ import { formatToIDR } from '../utils/formatCurrency';
 import DestinationSkeleton from '../components/DestinationSkeleton';
 import { useNavigate } from 'react-router-dom';
 
-console.log(allDestinations);
-
 const ITEMS_PER_PAGE = 6;
 
 const DestinationsPage = () => {
