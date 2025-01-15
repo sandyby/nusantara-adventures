@@ -6,3 +6,17 @@ Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+Packages used:
+framer-motion
+react-router-dom
+prop-types
+tailwind-scrollbar
+slick-carousel
+axios
+react-icons
+gsap
+react-slick
+@studio-freight/lenis
+react-hot-toast
+gh-pages
