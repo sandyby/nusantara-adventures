@@ -1,5 +1,6 @@
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 const BASE_URL = import.meta.env.VITE_WEATHER_API_BASE_URL
+const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000;
 
 export const getWeatherByCoordinates = async (lat, lon) => {
     try {
@@ -21,7 +22,6 @@ export const getWeatherByCoordinates = async (lat, lon) => {
 };
 
 const weatherCache = new Map();
-const CACHE_DURATION = 30 * 60 * 1000;
 
 export const getCachedWeather = async (lat, lon) => {
     const cacheKey = `${lat}-${lon}`;

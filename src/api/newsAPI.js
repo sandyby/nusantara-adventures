@@ -1,7 +1,7 @@
 import { shuffleArray } from '../utils/blogsUtils';
 
 const API_KEY = import.meta.env.VITE_MEDIASTACK_API_KEY;
-const CACHE_DURATION = 30 * 60 * 1000;
+const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000;
 
 const newsCache = new Map();
 
