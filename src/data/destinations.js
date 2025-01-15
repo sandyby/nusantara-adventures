@@ -23,7 +23,7 @@ export const popularDestinations = [
     {
         name: "Raja Ampat",
         // image: "/images/destinations/raja-ampat.jpg",
-        image: `${BASE_URL}images/destinations/raja-ampa.jpg`.includes('undefined') ? FALLBACK_IMG : `${BASE_URL}images/destinations/raja-ampat.jpg`,
+        image: `${BASE_URL}images/destinations/raja-ampa.jpg`.includes('undefined') ? FALLBACK_IMG : `${BASE_URL}images/destinations/raja-ampa.jpg`,
         description: "Dive into the crystal-clear waters of Indonesia's paradise.",
         coordinates: {
             lat: -0.5000,
@@ -39,7 +39,7 @@ export const popularDestinations = [
     {
         name: "Borobudur",
         // image: "/images/destinations/borobudur.jpg",
-        image: "https::/placehold.co/400",
+        image: "https:/placehold.co/400",
         description: "Explore the world's largest Buddhist temple amidst misty mountains.",
         coordinates: {
             lat: -7.6079,
