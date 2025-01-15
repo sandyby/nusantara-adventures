@@ -18,7 +18,7 @@ const DestinationsPage = () => {
     const [hasMore, setHasMore] = useState(true);
     const observer = useRef();
     const navigate = useNavigate();
-
+    
     const lastDestinationRef = useCallback(node => {
         if (loading) return;
         if (observer.current) observer.current.disconnect();
@@ -29,23 +29,23 @@ const DestinationsPage = () => {
         });
         if (node) observer.current.observe(node);
     }, [loading, hasMore]);
-
+    
     const filteredDestinations = destinations.filter(dest =>
         filter === 'all' || dest.difficulty.toLowerCase() === filter.toLowerCase()
     );
-
+    
     useEffect(() => {
         setDestinations([]);
         setPage(1);
         setHasMore(true);
     }, [filter]);
-
+    
     useEffect(() => {
         const fetchWeatherData = async () => {
             setLoading(true);
             const start = (page - 1) * ITEMS_PER_PAGE;
             const end = page * ITEMS_PER_PAGE;
-
+            
             if (start < allDestinations.length) {
                 const newDestinations = allDestinations.slice(start, end);
                 const updatedNewDestinations = await Promise.all(
@@ -75,19 +75,21 @@ const DestinationsPage = () => {
             }
             setLoading(false);
         };
-
+        
         fetchWeatherData();
     }, [page]);
-
+    
     useEffect(() => {
         setDestinations([]);
         setPage(1);
         setHasMore(true);
     }, [filter]);
-
+    
     const allActivities = [...new Set(
         allDestinations.flatMap(dest => dest.activities)
     )].sort();
+
+    console.log(allDestinations);
 
     const handleBookClick = (destinationName) => {
         const urlFriendlyName = destinationName.toLowerCase().replace(/\s+/g, '-');

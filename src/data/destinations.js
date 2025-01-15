@@ -1,7 +1,13 @@
+const BASE_URL = import.meta.env.VITE_BASE_URL || '/';
+const FALLBACK_IMG = 'https:://placehold.co/400';
+
 export const popularDestinations = [
     {
         name: "Bali",
-        image: "/images/destinations/bali.jpg",
+        // image: `${BASE_URL}images/destinations/bali.jpg`,
+        image: 'public/images/destinations/bali.jpg',
+        // image: "https://placehold.co/400",
+        // image: `${BASE_URL}images/destinations/bali.jpg`.includes('undefined') ? FALLBACK_IMG : `${BASE_URL}images/destinations/bali.jpg`,
         description: "Experience the magic of Bali's beaches, temples, and culture.",
         coordinates: {
             lat: -8.4095,
@@ -16,7 +22,8 @@ export const popularDestinations = [
     },
     {
         name: "Raja Ampat",
-        image: "/images/destinations/raja-ampat.jpg",
+        // image: "/images/destinations/raja-ampat.jpg",
+        image: `${BASE_URL}images/destinations/raja-ampa.jpg`.includes('undefined') ? FALLBACK_IMG : `${BASE_URL}images/destinations/raja-ampat.jpg`,
         description: "Dive into the crystal-clear waters of Indonesia's paradise.",
         coordinates: {
             lat: -0.5000,
