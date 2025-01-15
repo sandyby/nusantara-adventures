@@ -11,6 +11,8 @@ const navItems = [
     { name: "Contact", path: "/contact" }
 ];
 
+const BASE_URL = import.meta.env.VITE_BASE_URL || '/';
+
 const Navbar = () => {
     const navigate = useNavigate()
     const [scrolled, setScrolled] = useState(false);
@@ -106,7 +108,7 @@ const Navbar = () => {
                                 whileTap={{ scale: 0.95 }}
                             >
                                 <motion.img
-                                    src="/images/logo.png"
+                                    src={`${BASE_URL}images/logo.png`}
                                     alt="Nusantara Adventures"
                                     className="w-8 h-8 object-contain"
                                     whileHover={{ rotate: 360 }}

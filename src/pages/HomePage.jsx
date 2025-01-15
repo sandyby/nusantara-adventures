@@ -44,6 +44,8 @@ const Home = () => {
     const [destinationsWithWeather, setDestinationsWithWeather] = useState([]);
     const [loading, setLoading] = useState(true);
     const [featuredPosts, setFeaturedPosts] = useState([]);
+    const [error, setError] = useState(null);
+    const [apiInfo, setApiInfo] = useState(null);
 
     useEffect(() => {
         const lenis = new Lenis({
@@ -106,6 +108,10 @@ const Home = () => {
                 if (!response.ok) {
                     const errorData = await response.json();
                     if (errorData.error && errorData.error.code === 104) {
+                        setApiInfo({
+                            status: 'limit_reached',
+                            message: 'Monthly API request limit reached'
+                        });
                         console.warn('API limit reached');
                         return;
                     }
@@ -118,6 +124,7 @@ const Home = () => {
                 setFeaturedPosts(shuffledPosts.slice(0, 2));
             } catch (err) {
                 console.error('Error fetching featured posts:', err);
+                setError(err.message);
             } finally {
                 setLoading(false);
             }

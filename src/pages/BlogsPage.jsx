@@ -65,8 +65,12 @@ const BlogsPage = () => {
             <div className="min-h-screen bg-slate-50 pt-20">
                 <div className="container mx-auto px-4 py-8">
                     <div className="text-center text-red-600">
-                        <h2 className="text-2xl font-bold mb-4">Error</h2>
-                        <p>{error}</p>
+                        {apiInfo?.status === 'limit_reached'} {
+                            <div className="text-red-600">
+                                <h2 className="text-2xl font-bold mb-4">Error</h2>
+                                <p>The news are currently not available! :( We&apos;ll update more to you soon</p>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

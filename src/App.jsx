@@ -67,7 +67,7 @@ function App() {
               <Route path="/terms" element={<TermsAndConditions />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/destinations" element={<Destinations />} />
-              <Route path="/destinations/:slug" element={<DestinationDetailPage />} />
+              <Route path="/destinations/:destinationId" element={<DestinationDetailPage />} />
               <Route path="/experiences" element={<Experiences />} />
               <Route path="/experiences/:category" element={<Experiences />} />
               <Route path="/blogs" element={<Blogs />} />

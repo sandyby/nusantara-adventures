@@ -2,6 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { experiences } from "../data/experiences";
 
+const BASE_URL = import.meta.env.VITE_BASE_URL || '/';
+
 const Footer = () => {
     const navigate = useNavigate();
     const uniqueCategories = [...new Set(experiences.map(exp => exp.category))]
@@ -79,7 +81,7 @@ const Footer = () => {
                                 className="w-12 h-12 bg-emerald-500 rounded-lg flex items-center justify-center"
                             >
                                 <img
-                                    src="/images/logo.png"
+                                    src={`${BASE_URL}images/logo.png`}
                                     alt="Nusantara Adventures"
                                     className="w-8 h-8 object-contain"
                                 />

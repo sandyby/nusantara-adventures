@@ -91,6 +91,7 @@ const DestinationsPage = () => {
 
     console.log(allDestinations);
 
+    {/* Here */}
     const handleBookClick = (destinationName) => {
         const urlFriendlyName = destinationName.toLowerCase().replace(/\s+/g, '-');
         console.log(urlFriendlyName);
@@ -244,7 +245,7 @@ const DestinationsPage = () => {
                                         <span className="text-2xl font-bold text-emerald-600">
                                             {formatToIDR(destination.price)}
                                         </span>
-                                        <span className="text-slate-500 text-sm">/person</span>
+                                        <span className="text-slate-500 text-sm">/pers.</span>
                                     </div>
                                     <motion.button
                                         whileHover={{ scale: 1.05 }}

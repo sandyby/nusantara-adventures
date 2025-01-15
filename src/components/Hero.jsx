@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { useNavbar } from '../contexts/NavbarContext';
 
+const BASE_URL = import.meta.env.VITE_BASE_URL || '/';
+
 const Hero = () => {
     const { setIsOpen } = useNavbar();
 
@@ -20,7 +22,7 @@ const Hero = () => {
             <div className="hero-background absolute inset-0">
                 <div
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
-                    style={{ backgroundImage: `url('/images/hero.jpg')` }}
+                    style={{ backgroundImage: `url(${BASE_URL}images/hero.jpg)` }}
                 >
                     <div className="absolute inset-0 bg-gradient-to-b from-emerald-900/70 to-slate-900/70" />
                 </div>

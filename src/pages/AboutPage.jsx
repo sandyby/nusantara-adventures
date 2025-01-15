@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion';
 
+const BASE_URL = import.meta.env.VITE_BASE_URL || '/';
+
 const AboutPage = () => {
   const teamMembers = [
     {
       name: "Sandy Bonfilio Yuvens",
       role: "Founder & Developer",
-      image: "/images/sandy.jpg",
+      image: `${BASE_URL}images/sandy.jpg`,
       instagram: "https://instagram.com/sandyb________"
     }
   ];

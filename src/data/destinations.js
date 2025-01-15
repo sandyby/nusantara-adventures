@@ -4,10 +4,8 @@ const FALLBACK_IMG = 'https://placehold.co/400';
 export const popularDestinations = [
     {
         name: "Bali",
-        // image: `${BASE_URL}images/destinations/bali.jpg`,
-        // image: 'public/images/destinations/bali.jpg',
+        image: `${BASE_URL}images/destinations/bali.jpg`,
         // image: "https://placehold.co/400",
-        image: `${BASE_URL}images/destinations/bali.jpg`.includes('undefined') ? FALLBACK_IMG : `${BASE_URL}images/destinations/bali.jpg`,
         description: "Experience the magic of Bali's beaches, temples, and culture.",
         coordinates: {
             lat: -8.4095,
@@ -22,8 +20,8 @@ export const popularDestinations = [
     },
     {
         name: "Raja Ampat",
-        // image: "/images/destinations/raja-ampat.jpg",
-        image: `${BASE_URL}images/destinations/raja-ampa.jpg`.includes('undefined') ? FALLBACK_IMG : `${BASE_URL}images/destinations/raja-ampa.jpg`,
+        image: `${BASE_URL}images/destinations/raja-ampat.jpg`,
+        // image: "https://placehold.co/400",
         description: "Dive into the crystal-clear waters of Indonesia's paradise.",
         coordinates: {
             lat: -0.5000,
@@ -38,8 +36,8 @@ export const popularDestinations = [
     },
     {
         name: "Borobudur",
-        // image: "/images/destinations/borobudur.jpg",
-        image: "https://placehold.co/400",
+        image: `${BASE_URL}images/destinations/borobudur.jpg`,
+        // image: "https://placehold.co/400",
         description: "Explore the world's largest Buddhist temple amidst misty mountains.",
         coordinates: {
             lat: -7.6079,
@@ -58,7 +56,8 @@ export const allDestinations = [
     ...popularDestinations,
     {
         name: "Komodo Island",
-        image: "/images/destinations/komodo-island.jpg",
+        image: `${BASE_URL}images/destinations/komodo-island.jpg`,
+        // image: "https://placehold.co/400",
         description: "Meet the legendary Komodo dragons in their natural habitat.",
         coordinates: {
             lat: -8.5662,
@@ -73,7 +72,8 @@ export const allDestinations = [
     },
     {
         name: "Lake Toba",
-        image: "/images/destinations/lake-toba.jpg",
+        image: `${BASE_URL}images/destinations/lake-toba.jpg`,
+        // image: "https://placehold.co/400",
         description: "Relax by the largest volcanic lake in the world.",
         coordinates: {
             lat: 2.7079,
@@ -88,7 +88,8 @@ export const allDestinations = [
     },
     {
         name: "Mount Bromo",
-        image: "/images/destinations/mount-bromo.jpg",
+        image: `${BASE_URL}images/destinations/mount-bromo.jpg`,
+        // image: "https://placehold.co/400",
         description: "Witness the breathtaking sunrise over an active volcano.",
         coordinates: {
             lat: -7.9425,
@@ -103,7 +104,8 @@ export const allDestinations = [
     },
     {
         name: "Tana Toraja",
-        image: "/images/destinations/tana-toraja.jpg",
+        image: `${BASE_URL}images/destinations/tana-toraja.jpg`,
+        // image: "https://placehold.co/400",
         description: "Discover the unique funeral rituals and culture of Toraja.",
         coordinates: {
             lat: -3.0601,
@@ -118,7 +120,8 @@ export const allDestinations = [
     },
     {
         name: "Gili Islands",
-        image: "/images/destinations/gili.jpg",
+        image: `${BASE_URL}images/destinations/gili.jpg`,
+        // image: "https://placehold.co/400",
         description: "Unwind on these car-free islands with stunning beaches.",
         coordinates: {
             lat: -8.3483,
@@ -133,7 +136,8 @@ export const allDestinations = [
     },
     {
         name: "Yogyakarta",
-        image: "/images/destinations/yogyakarta.jpg",
+        image: `${BASE_URL}images/destinations/yogyakarta.jpg`,
+        // image: "https://placehold.co/400",
         description: "Explore the cultural heart of Java with ancient temples and art.",
         coordinates: {
             lat: -7.7956,
@@ -148,7 +152,8 @@ export const allDestinations = [
     },
     {
         name: "Bunaken",
-        image: "/images/destinations/bunaken.jpg",
+        image: `${BASE_URL}images/destinations/bunaken.jpg`,
+        // image: "https://placehold.co/400",
         description: "Snorkel or dive into one of Indonesia's best marine parks.",
         coordinates: {
             lat: 1.6222,
@@ -163,7 +168,8 @@ export const allDestinations = [
     },
     {
         name: "Wakatobi",
-        image: "/images/destinations/wakatobi.jpg",
+        image: `${BASE_URL}images/destinations/wakatobi.jpg`,
+        // image: "https://placehold.co/400",
         description: "Dive into vibrant coral reefs in this remote paradise.",
         coordinates: {
             lat: -5.3421,
@@ -178,7 +184,8 @@ export const allDestinations = [
     },
     {
         name: "Belitung",
-        image: "/images/destinations/belitung.jpg",
+        image: `${BASE_URL}images/destinations/belitung.jpg`,
+        // image: "https://placehold.co/400",
         description: "Relax on white sandy beaches and visit unique granite rock formations.",
         coordinates: {
             lat: -2.8676,
@@ -193,7 +200,8 @@ export const allDestinations = [
     },
     {
         name: "Banda Islands",
-        image: "/images/destinations/banda-islands.jpg",
+        image: `${BASE_URL}images/destinations/banda-islands.jpg`,
+        // image: "https://placehold.co/400",
         description: "Step back in time to Indonesia's historic spice trade center.",
         coordinates: {
             lat: -4.5259,
@@ -208,7 +216,8 @@ export const allDestinations = [
     },
     {
         name: "Derawan Islands",
-        image: "/images/destinations/derawan-islands.jpg",
+        image: `${BASE_URL}images/destinations/derawan-islands.jpg`,
+        // image: "https://placehold.co/400",
         description: "Swim with turtles and manta rays in this hidden gem.",
         coordinates: {
             lat: 2.2833,
@@ -223,7 +232,8 @@ export const allDestinations = [
     },
     {
         name: "Weh Island",
-        image: "/images/destinations/weh-island.jpg",
+        image: `${BASE_URL}images/destinations/weh=island.jpg`,
+        // image: "https://placehold.co/400",
         description: "Discover unspoiled beaches at the northernmost tip of Indonesia.",
         coordinates: {
             lat: 5.8764,
