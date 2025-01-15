@@ -1,5 +1,5 @@
 const BASE_URL = import.meta.env.VITE_BASE_URL || '/';
-const FALLBACK_IMG = 'https:://placehold.co/400';
+const FALLBACK_IMG = 'https://placehold.co/400';
 
 export const popularDestinations = [
     {
@@ -39,7 +39,7 @@ export const popularDestinations = [
     {
         name: "Borobudur",
         // image: "/images/destinations/borobudur.jpg",
-        image: "https:/placehold.co/400",
+        image: "https://placehold.co/400",
         description: "Explore the world's largest Buddhist temple amidst misty mountains.",
         coordinates: {
             lat: -7.6079,
