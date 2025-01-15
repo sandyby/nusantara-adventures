@@ -5,9 +5,9 @@ export const popularDestinations = [
     {
         name: "Bali",
         // image: `${BASE_URL}images/destinations/bali.jpg`,
-        image: 'public/images/destinations/bali.jpg',
+        // image: 'public/images/destinations/bali.jpg',
         // image: "https://placehold.co/400",
-        // image: `${BASE_URL}images/destinations/bali.jpg`.includes('undefined') ? FALLBACK_IMG : `${BASE_URL}images/destinations/bali.jpg`,
+        image: `${BASE_URL}images/destinations/bali.jpg`.includes('undefined') ? FALLBACK_IMG : `${BASE_URL}images/destinations/bali.jpg`,
         description: "Experience the magic of Bali's beaches, temples, and culture.",
         coordinates: {
             lat: -8.4095,
@@ -38,7 +38,8 @@ export const popularDestinations = [
     },
     {
         name: "Borobudur",
-        image: "/images/destinations/borobudur.jpg",
+        // image: "/images/destinations/borobudur.jpg",
+        image: "https::/placehold.co/400",
         description: "Explore the world's largest Buddhist temple amidst misty mountains.",
         coordinates: {
             lat: -7.6079,
