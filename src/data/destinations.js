@@ -232,7 +232,7 @@ export const allDestinations = [
     },
     {
         name: "Weh Island",
-        image: `${BASE_URL}images/destinations/weh=island.jpg`,
+        image: `${BASE_URL}images/destinations/weh-island.jpg`,
         // image: "https://placehold.co/400",
         description: "Discover unspoiled beaches at the northernmost tip of Indonesia.",
         coordinates: {

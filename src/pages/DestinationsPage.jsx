@@ -5,6 +5,7 @@ import { getCachedWeather } from '../api/weatherAPI';
 import { formatToIDR } from '../utils/formatCurrency';
 import DestinationSkeleton from '../components/DestinationSkeleton';
 import { useNavigate } from 'react-router-dom';
+import WeatherWidget from '../components/WeatherWidget';
 
 const ITEMS_PER_PAGE = 6;
 
@@ -18,7 +19,7 @@ const DestinationsPage = () => {
     const [hasMore, setHasMore] = useState(true);
     const observer = useRef();
     const navigate = useNavigate();
-    
+
     const lastDestinationRef = useCallback(node => {
         if (loading) return;
         if (observer.current) observer.current.disconnect();
@@ -29,23 +30,23 @@ const DestinationsPage = () => {
         });
         if (node) observer.current.observe(node);
     }, [loading, hasMore]);
-    
+
     const filteredDestinations = destinations.filter(dest =>
         filter === 'all' || dest.difficulty.toLowerCase() === filter.toLowerCase()
     );
-    
+
     useEffect(() => {
         setDestinations([]);
         setPage(1);
         setHasMore(true);
     }, [filter]);
-    
+
     useEffect(() => {
         const fetchWeatherData = async () => {
             setLoading(true);
             const start = (page - 1) * ITEMS_PER_PAGE;
             const end = page * ITEMS_PER_PAGE;
-            
+
             if (start < allDestinations.length) {
                 const newDestinations = allDestinations.slice(start, end);
                 const updatedNewDestinations = await Promise.all(
@@ -75,23 +76,20 @@ const DestinationsPage = () => {
             }
             setLoading(false);
         };
-        
+
         fetchWeatherData();
     }, [page]);
-    
+
     useEffect(() => {
         setDestinations([]);
         setPage(1);
         setHasMore(true);
     }, [filter]);
-    
+
     const allActivities = [...new Set(
         allDestinations.flatMap(dest => dest.activities)
     )].sort();
 
-    console.log(allDestinations);
-
-    {/* Here */}
     const handleBookClick = (destinationName) => {
         const urlFriendlyName = destinationName.toLowerCase().replace(/\s+/g, '-');
         console.log(urlFriendlyName);
@@ -193,36 +191,45 @@ const DestinationsPage = () => {
                             ref={index === filteredDestinations.length - 1 ? lastDestinationRef : null}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
+                            viewport={{ once: false }}
                             className="bg-white rounded-xl shadow-lg overflow-hidden"
                         >
-                            <div className="relative h-48">
+                            <div className="relative h-48 overflow-hidden group">
                                 <img
                                     src={destination.image}
                                     alt={destination.name}
                                     className="w-full h-full object-cover"
                                 />
-                                {destination.weather && (
-                                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm 
-                                                  rounded-full px-3 py-1 flex items-center gap-2">
-                                        <img
-                                            src={destination.weather.icon}
-                                            alt={destination.weather.condition}
-                                            className="w-6 h-6"
-                                        />
-                                        <span className="font-medium">
-                                            {destination.weather.temp}°C
-                                        </span>
-                                    </div>
-                                )}
+                                {destination.weather && <WeatherWidget weather={destination.weather} />}
+                                <motion.div
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    className={`absolute top-4 left-4 px-3 py-1 rounded-full text-sm font-medium
+                              ${destination.difficulty === 'Easy'
+                                            ? 'bg-emerald-500 text-white'
+                                            : destination.difficulty === 'Moderate'
+                                                ? 'bg-amber-500 text-white'
+                                                : 'bg-red-500 text-white'}`}
+                                >
+                                    {destination.difficulty.charAt(0).toUpperCase() + destination.difficulty.slice(1)}
+                                </motion.div>
                             </div>
                             <div className="p-6">
                                 <div className="flex justify-between items-start mb-4">
-                                    <h3 className="text-xl font-bold text-slate-800">
+                                    <motion.h3
+                                        className="text-xl font-bold text-slate-800 hover:text-emerald-600
+                                 transition-colors duration-300 cursor-pointer"
+                                        whileHover={{ scale: 1.02 }}
+                                    >
                                         {destination.name}
-                                    </h3>
+                                    </motion.h3>
                                     <div className="flex items-center gap-1">
-                                        <span className="text-yellow-500">★</span>
+                                        <motion.span
+                                            className="text-yellow-500 group-hover:scale-110
+                                     transition-transform duration-300"
+                                        >
+                                            ★
+                                        </motion.span>
                                         <span className="font-medium">{destination.rating}</span>
                                     </div>
                                 </div>
@@ -231,22 +238,28 @@ const DestinationsPage = () => {
                                 </p>
                                 <div className="flex flex-wrap gap-2 mb-4">
                                     {destination.activities.map((activity, index) => (
-                                        <span
+                                        <motion.span
                                             key={index}
+                                            whileHover={{ scale: 1.05 }}
                                             className="bg-slate-100 text-slate-700 px-2 py-1 
-                                                     rounded-full text-sm"
+                                                 rounded-full text-sm hover:bg-slate-200
+                                                 transition-colors duration-300 cursor-pointer"
                                         >
                                             {activity}
-                                        </span>
+                                        </motion.span>
                                     ))}
                                 </div>
                                 <div className="flex justify-between items-center">
-                                    <div>
-                                        <span className="text-2xl font-bold text-emerald-600">
+                                    <motion.div
+                                        whileHover={{ scale: 1.05 }}
+                                        className="group cursor-pointer"
+                                    >
+                                        <span className="text-2xl font-bold text-emerald-600 
+                                     group-hover:text-emerald-700 transition-colors">
                                             {formatToIDR(destination.price)}
                                         </span>
                                         <span className="text-slate-500 text-sm">/pers.</span>
-                                    </div>
+                                    </motion.div>
                                     <motion.button
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}

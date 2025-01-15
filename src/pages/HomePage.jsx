@@ -11,6 +11,9 @@ import { testimonials } from "../data/testimonials";
 // import { blogPosts } from "../data/blogPosts";
 import { getCachedWeather } from '../api/weatherAPI';
 import { shuffleArray } from '../utils/blogsUtils.js';
+import { getCachedNews } from '../api/newsAPI';
+import toast, { Toaster } from 'react-hot-toast';
+import WeatherWidget from '../components/WeatherWidget';
 
 const stats = [
     { number: "10k+", label: "Happy Travelers" },
@@ -37,6 +40,115 @@ const CustomArrow = ({ direction, onClick }) => (
         )}
     </button>
 );
+
+const NewsletterSection = () => {
+    const [email, setEmail] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!email) {
+            toast.error('Please enter your email address');
+            return;
+        }
+
+        if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+            toast.error('Please enter a valid email address');
+            return;
+        }
+
+        setIsSubmitting(true);
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        toast.success('Thank you for subscribing to our newsletter!', {
+            duration: 4000,
+        });
+
+        setEmail('');
+        setIsSubmitting(false);
+    };
+
+    return (
+        <section id="newsletter" className="py-20 px-4 md:px-8 bg-white">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="container mx-auto max-w-4xl text-center"
+            >
+                <motion.h2
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 }}
+                    className="text-3xl md:text-4xl font-bold mb-8 text-slate-800"
+                >
+                    Stay Updated
+                </motion.h2>
+                <motion.p
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.3 }}
+                    className="text-lg text-slate-600 mb-8"
+                >
+                    Subscribe to our newsletter for exclusive travel tips and special offers
+                </motion.p>
+                <motion.form
+                    onSubmit={handleSubmit}
+                    className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.4 }}
+                >
+                    <motion.input
+                        type="email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="flex-1 px-6 py-4 rounded-lg border border-slate-200 
+                                 focus:outline-none focus:ring-2 focus:ring-emerald-500
+                                 transition-all duration-300"
+                        whileFocus={{ scale: 1.01 }}
+                        disabled={isSubmitting}
+                    />
+                    <motion.button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className={`bg-emerald-500 text-white px-8 py-4 rounded-lg font-medium 
+                                 transition-all duration-300 shadow-lg
+                                 ${isSubmitting ? 'opacity-75 cursor-not-allowed' : 'hover:bg-emerald-600'}`}
+                        whileHover={!isSubmitting ? { scale: 1.02 } : {}}
+                        whileTap={!isSubmitting ? { scale: 0.98 } : {}}
+                    >
+                        {isSubmitting ? (
+                            <div className="flex items-center justify-center">
+                                <motion.div
+                                    className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                                    animate={{ rotate: 360 }}
+                                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                />
+                            </div>
+                        ) : (
+                            'Subscribe'
+                        )}
+                    </motion.button>
+                </motion.form>
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.5 }}
+                    className="mt-6 text-sm text-slate-500"
+                >
+                    By subscribing, you agree to our Terms of Service and Privacy Policy
+                </motion.div>
+            </motion.div>
+        </section>
+    );
+};
 
 const Home = () => {
     const navigate = useNavigate();
@@ -96,32 +208,22 @@ const Home = () => {
         const fetchFeaturedPosts = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(
-                    `https://api.mediastack.com/v1/news?` +
-                    `access_key=${import.meta.env.VITE_MEDIASTACK_API_KEY}` +
-                    `&countries=id` +
-                    `&category=entertainment` +
-                    `&languages=en` +
-                    `&limit=6`
-                );
+                const { data, fromCache, error } = await getCachedNews(6);
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    if (errorData.error && errorData.error.code === 104) {
-                        setApiInfo({
-                            status: 'limit_reached',
-                            message: 'Monthly API request limit reached'
-                        });
-                        console.warn('API limit reached');
-                        return;
-                    }
-                    throw new Error('Failed to fetch posts');
+                if (error === 'API_LIMIT_REACHED') {
+                    setApiInfo({
+                        status: 'limit_reached',
+                        message: 'Monthly API request limit reached'
+                    });
+                    return;
                 }
 
-                const data = await response.json();
-                const postsWithImages = data.data.filter(post => post.image);
-                const shuffledPosts = shuffleArray(postsWithImages);
+                const shuffledPosts = shuffleArray(data);
                 setFeaturedPosts(shuffledPosts.slice(0, 2));
+
+                if (fromCache) {
+                    console.log('Using cached news data');
+                }
             } catch (err) {
                 console.error('Error fetching featured posts:', err);
                 setError(err.message);
@@ -129,6 +231,7 @@ const Home = () => {
                 setLoading(false);
             }
         };
+
         fetchFeaturedPosts();
     }, []);
 
@@ -240,21 +343,22 @@ const Home = () => {
                                         <h3 className="text-3xl font-bold text-white mb-2">
                                             {destination.name}
                                         </h3>
-                                        {destination.weather && (
-                                            <div className="flex items-center gap-2 mb-2">
-                                                <img
-                                                    src={destination.weather.icon}
-                                                    alt={destination.weather.condition}
-                                                    className="w-8 h-8"
-                                                />
-                                                <span className="text-white text-lg">
-                                                    {destination.weather.temp}°C
-                                                </span>
-                                                <span className="text-white/80 text-sm">
-                                                    {destination.weather.condition}
-                                                </span>
-                                            </div>
-                                        )}
+                                        {destination.weather && <WeatherWidget weather={destination.weather} />}
+                                        {/* (
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <img
+                                                src={destination.weather.icon}
+                                                alt={destination.weather.condition}
+                                                className="w-8 h-8"
+                                            />
+                                            <span className="text-white text-lg">
+                                                {destination.weather.temp}°C
+                                            </span>
+                                            <span className="text-white/80 text-sm">
+                                                {destination.weather.condition}
+                                            </span>
+                                        </div>
+                                        )} */}
                                         <motion.div
                                             initial={{ height: 0, opacity: 0 }}
                                             animate={{
@@ -365,7 +469,7 @@ const Home = () => {
             </section>
 
             <section id="statistics" className="py-20 bg-emerald-600 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[url('/images/pattern.png')] opacity-10" />
+                <div className="absolute inset-0 opacity-10" />
                 <motion.div
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
@@ -465,79 +569,98 @@ const Home = () => {
                     ) : (
                         <>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                                {featuredPosts.map((post, index) => (
-                                    <motion.article
-                                        key={`${post.url}-${post.published_at}-${index}`}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        className="bg-white rounded-xl shadow-lg overflow-hidden"
-                                    >
-                                        {post.image && (
-                                            <div className="relative h-64">
-                                                <img
-                                                    src={post.image}
-                                                    alt={post.title}
-                                                    className="w-full h-full object-cover"
-                                                    onError={(e) => {
-                                                        e.target.src = 'https://placehold.co/610x260';
-                                                    }}
-                                                />
+                                {featuredPosts.length > 0 ? (
+                                    featuredPosts.map((post, index) => (
+                                        <motion.article
+                                            key={`${post.url}-${post.published_at}-${index}`}
+                                            initial={{ opacity: 0, y: 20 }}
+                                            whileInView={{ opacity: 1, y: 0 }}
+                                            viewport={{ once: true }}
+                                            className="bg-white rounded-xl shadow-lg overflow-hidden"
+                                        >
+                                            {post.image && (
+                                                <div className="relative h-64">
+                                                    <img
+                                                        src={post.image}
+                                                        alt={post.title}
+                                                        className="w-full h-full object-cover"
+                                                        onError={(e) => {
+                                                            e.target.src = 'https://placehold.co/610x260';
+                                                        }}
+                                                    />
+                                                </div>
+                                            )}
+                                            <div className="p-6">
+                                                <div className="flex items-center gap-2 mb-4">
+                                                    <span className="text-sm text-slate-500">
+                                                        {new Date(post.published_at).toLocaleDateString('en-US', {
+                                                            year: 'numeric',
+                                                            month: 'long',
+                                                            day: 'numeric'
+                                                        })}
+                                                    </span>
+                                                    <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
+                                                    <span className="text-sm text-emerald-600 font-medium">
+                                                        {post.source}
+                                                    </span>
+                                                </div>
+                                                <h3 className="text-xl font-bold text-slate-800 mb-3 line-clamp-2">
+                                                    {post.title}
+                                                </h3>
+                                                <p className="text-slate-600 mb-4 line-clamp-3">
+                                                    {post.description}
+                                                </p>
+                                                <a
+                                                    href={post.url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center text-emerald-600 
+                                                         hover:text-emerald-700 font-medium"
+                                                >
+                                                    Read More
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        className="h-5 w-5 ml-1"
+                                                        viewBox="0 0 20 20"
+                                                        fill="currentColor">
+                                                        <path fillRule="evenodd"
+                                                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                                            clipRule="evenodd" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </motion.article>
+                                    ))
+                                ) : (
+                                    <div className="col-span-2 text-center py-8">
+                                        {(error || apiInfo?.status === 'limit_reached') ? (
+                                            <div className="bg-amber-50 p-6 rounded-lg border border-amber-200">
+                                                <h3 className="text-amber-800 font-semibold mb-2">News Unavailable</h3>
+                                                <p className="text-amber-700">
+                                                    Sorry! We ran out of news :( We&apos;ll update you as soon as possible!
+                                                </p>
+                                            </div>
+                                        ) : (
+                                            <div className="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                                                <p className="text-slate-600">No news articles available at the moment.</p>
                                             </div>
                                         )}
-                                        <div className="p-6">
-                                            <div className="flex items-center gap-2 mb-4">
-                                                <span className="text-sm text-slate-500">
-                                                    {new Date(post.published_at).toLocaleDateString('en-US', {
-                                                        year: 'numeric',
-                                                        month: 'long',
-                                                        day: 'numeric'
-                                                    })}
-                                                </span>
-                                                <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
-                                                <span className="text-sm text-emerald-600 font-medium">
-                                                    {post.source}
-                                                </span>
-                                            </div>
-                                            <h3 className="text-xl font-bold text-slate-800 mb-3 line-clamp-2">
-                                                {post.title}
-                                            </h3>
-                                            <p className="text-slate-600 mb-4 line-clamp-3">
-                                                {post.description}
-                                            </p>
-                                            <a
-                                                href={post.url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="inline-flex items-center text-emerald-600 
-                                                     hover:text-emerald-700 font-medium"
-                                            >
-                                                Read More
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    className="h-5 w-5 ml-1"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor">
-                                                    <path fillRule="evenodd"
-                                                        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                                        clipRule="evenodd" />
-                                                </svg>
-                                            </a>
-                                        </div>
-                                    </motion.article>
-                                ))}
+                                    </div>
+                                )}
                             </div>
-                            <div className="text-center">
-                                <motion.button
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    onClick={() => navigate('/blog')}
-                                    className="bg-emerald-500 text-white px-8 py-3 rounded-lg
-                                         font-medium hover:bg-emerald-600 transition-colors
-                                         shadow-lg shadow-emerald-500/30"
-                                >
-                                    View More Stories
-                                </motion.button>
-                            </div>
+                            {featuredPosts.length > 0 && (
+                                <div className="text-center">
+                                    <motion.button
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        onClick={() => navigate('/blog')}
+                                        className="bg-emerald-500 text-white px-8 py-3 rounded-lg
+                                                 font-medium hover:bg-emerald-600 transition-colors
+                                                 shadow-lg shadow-emerald-500/30"
+                                    >
+                                        View More Stories
+                                    </motion.button>
+                                </div>
+                            )}
                         </>
                     )}
                 </div>
@@ -568,37 +691,7 @@ const Home = () => {
                 </motion.div>
             </section>
 
-            <section id="newsletter" className="py-20 px-4 md:px-8 bg-white">
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    className="container mx-auto max-w-4xl text-center"
-                >
-                    <h2 className="text-3xl md:text-4xl font-bold mb-8 text-slate-800">
-                        Stay Updated
-                    </h2>
-                    <p className="text-lg text-slate-600 mb-8">
-                        Subscribe to our newsletter for exclusive travel tips and special offers
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
-                        <input
-                            type="email"
-                            placeholder="Enter your email"
-                            className="flex-1 px-6 py-4 rounded-lg border border-slate-200 
-                                     focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                        />
-                        <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            className="bg-emerald-500 text-white px-8 py-4 rounded-lg font-medium 
-                                     hover:bg-emerald-600 transition-colors shadow-lg"
-                        >
-                            Subscribe
-                        </motion.button>
-                    </div>
-                </motion.div>
-            </section>
+            <NewsletterSection />
         </motion.div>
     );
 };

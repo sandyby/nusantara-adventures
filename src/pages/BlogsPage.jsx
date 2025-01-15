@@ -110,88 +110,92 @@ const BlogsPage = () => {
             </div>
 
             <div className="container mx-auto px-4 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {posts.map((post, index) => (
-                        <motion.article
-                            key={`${post.url}-${index}`}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            className="bg-white rounded-xl shadow-lg overflow-hidden 
-                                     hover:shadow-xl transition-shadow duration-300"
-                        >
-                            {post.image && (
-                                <div className="relative h-48">
-                                    <img
-                                        src={post.image}
-                                        alt={post.title}
-                                        className="w-full h-full object-cover"
-                                        onError={(e) => {
-                                            e.target.src = '/images/placeholder.jpg';
-                                        }}
-                                    />
+                <div className="max-w-5xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {posts.map((post, index) => (
+                            <motion.article
+                                key={`${post.url}-${post.published_at}-${index}`}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                className="bg-white rounded-xl shadow-lg overflow-hidden h-[500px] flex flex-col
+                                         hover:shadow-xl transition-shadow duration-300"
+                            >
+                                {post.image && (
+                                    <div className="relative h-48">
+                                        <img
+                                            src={post.image}
+                                            alt={post.title}
+                                            className="w-full h-full object-cover"
+                                            onError={(e) => {
+                                                e.target.src = '/images/placeholder.jpg';
+                                            }}
+                                        />
+                                    </div>
+                                )}
+                                <div className="p-6">
+                                    <div className="flex items-center gap-2 mb-4">
+                                        <span className="text-sm text-slate-500">
+                                            {new Date(post.published_at).toLocaleDateString('en-US', {
+                                                year: 'numeric',
+                                                month: 'long',
+                                                day: 'numeric'
+                                            })}
+                                        </span>
+                                        <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
+                                        <span className="text-sm text-emerald-600 font-medium">
+                                            {post.source}
+                                        </span>
+                                    </div>
+                                    <h2 className="text-xl font-bold text-slate-800 mb-3 line-clamp-2">
+                                        {post.title}
+                                    </h2>
+                                    <p className="text-slate-600 mb-4 line-clamp-3">
+                                        {post.description}
+                                    </p>
+                                    <a
+                                        href={post.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center text-emerald-600 
+                                                 hover:text-emerald-700 font-medium"
+                                    >
+                                        Read More
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            className="h-5 w-5 ml-1"
+                                            viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path fillRule="evenodd"
+                                                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                                clipRule="evenodd" />
+                                        </svg>
+                                    </a>
                                 </div>
-                            )}
-                            <div className="p-6">
-                                <div className="flex items-center gap-2 mb-4">
-                                    <span className="text-sm text-slate-500">
-                                        {new Date(post.published_at).toLocaleDateString('en-US', {
-                                            year: 'numeric',
-                                            month: 'long',
-                                            day: 'numeric'
-                                        })}
-                                    </span>
-                                    <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
-                                    <span className="text-sm text-emerald-600 font-medium">
-                                        {post.source}
-                                    </span>
-                                </div>
-                                <h2 className="text-xl font-bold text-slate-800 mb-3 line-clamp-2">
-                                    {post.title}
-                                </h2>
-                                <p className="text-slate-600 mb-4 line-clamp-3">
-                                    {post.description}
-                                </p>
-                                <a
-                                    href={post.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center text-emerald-600 
-                                             hover:text-emerald-700 font-medium"
-                                >
-                                    Read More
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5 ml-1"
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor">
-                                        <path fillRule="evenodd"
-                                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                            clipRule="evenodd" />
-                                    </svg>
-                                </a>
-                            </div>
-                        </motion.article>
-                    ))}
-                </div>
+                            </motion.article>
+                        ))}
+                    </div>
 
-                {loading ? (
-                    <div className="flex justify-center mt-8">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500"></div>
+                    <div className="max-w-5xl mx-auto">
+                        {loading ? (
+                            <div className="flex justify-center mt-8">
+                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500"></div>
+                            </div>
+                        ) : (
+                            <div className="text-center mt-12">
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    onClick={loadMore}
+                                    className="bg-emerald-500 text-white px-8 py-3 rounded-lg
+                                             font-medium hover:bg-emerald-600 transition-colors
+                                             shadow-lg shadow-emerald-500/30"
+                                >
+                                    Load More Stories
+                                </motion.button>
+                            </div>
+                        )}
                     </div>
-                ) : (
-                    <div className="text-center mt-12">
-                        <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={loadMore}
-                            className="bg-emerald-500 text-white px-8 py-3 rounded-lg
-                                     font-medium hover:bg-emerald-600 transition-colors
-                                     shadow-lg shadow-emerald-500/30"
-                        >
-                            Load More Stories
-                        </motion.button>
-                    </div>
-                )}
+                </div>
             </div>
         </motion.div>
     );
