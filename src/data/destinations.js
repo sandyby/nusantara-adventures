@@ -1,8 +1,7 @@
 export const popularDestinations = [
     {
         name: "Bali",
-        // image: "/images/destinations/bali.jpg",
-        image: "https:://placehold.co/400",
+        image: "/images/destinations/bali.jpg",
         description: "Experience the magic of Bali's beaches, temples, and culture.",
         coordinates: {
             lat: -8.4095,
