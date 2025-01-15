@@ -111,7 +111,7 @@ const Footer = () => {
                                              hover:bg-emerald-500 transition-colors duration-300"
                                 >
                                     <img
-                                        src={`/images/socials/${social.icon}`}
+                                        src={`${BASE_URL}images/socials/${social.icon}`}
                                         alt={social.name}
                                         className="w-5 h-5"
                                     />
